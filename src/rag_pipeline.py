@@ -52,10 +52,13 @@ def load_and_chunk_document(filepath, chunk_size=500, chunk_overlap=50):
             if page_text:
                 text += page_text + "\n"
 
-    # Split the document at every "Q:" marker, keeping the marker attached
+    # Split the document at every "Q:" marker, keeping the marker attached.
+    # The first split part (before the very first "Q:") is document header
+    # text (title, section headings before any question), not a real Q&A
+    # pair, so we skip it.
     raw_parts = text.split("Q:")
     chunks = []
-    for part in raw_parts:
+    for part in raw_parts[1:]:
         part = part.strip()
         if part:
             chunks.append("Q:" + part)
