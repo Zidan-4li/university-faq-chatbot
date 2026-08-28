@@ -37,14 +37,20 @@ DEFAULT_PERSIST_DIR = os.path.join(_PROJECT_ROOT, "models", "chroma_db")
 # -------------------------------------------------------------------
 def load_and_chunk_document(filepath, chunk_size=500, chunk_overlap=50):
     """
-    Reads a text file and splits it into chunks based on Q&A pairs
+    Reads a PDF file and splits it into chunks based on Q&A pairs
     (each chunk starts at a "Q:" marker). This keeps each question and
     its answer together as one complete unit, instead of cutting text
     at an arbitrary character count that could split a sentence or
     answer in half.
     """
-    with open(filepath, "r", encoding="utf-8") as f:
-        text = f.read()
+    import pdfplumber
+
+    text = ""
+    with pdfplumber.open(filepath) as pdf:
+        for page in pdf.pages:
+            page_text = page.extract_text()
+            if page_text:
+                text += page_text + "\n"
 
     # Split the document at every "Q:" marker, keeping the marker attached
     raw_parts = text.split("Q:")

@@ -8,7 +8,7 @@ from rag_pipeline import load_and_chunk_document, build_vector_store
 
 if __name__ == "__main__":
     print("Loading and chunking document...")
-    chunks = load_and_chunk_document("../data/university_faq.txt")
+    chunks = load_and_chunk_document("../data/university_faq.pdf")
     print(f"Created {len(chunks)} chunks.")
 
     print("Building vector store (this calls the Gemini embedding API)...")
