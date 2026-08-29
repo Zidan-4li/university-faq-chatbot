@@ -135,12 +135,19 @@ def retrieve_relevant_chunks(collection, question, top_k=3):
 # -------------------------------------------------------------------
 # STEP 5: Generate an answer using Gemini, grounded in retrieved chunks
 # -------------------------------------------------------------------
-def generate_answer(question, retrieved_chunks):
+def generate_answer(question, retrieved_chunks, max_retries=2):
     """
     Builds a prompt that includes the retrieved context, then asks
     Gemini to answer ONLY based on that context. This is what makes
     it "grounded" (reduces hallucination) instead of a plain chatbot.
+
+    Automatically retries a couple of times if the API is temporarily
+    unavailable (a common, expected occurrence with external services),
+    and returns a friendly message instead of crashing if it still
+    fails after retries.
     """
+    import time
+
     context = "\n\n".join(retrieved_chunks)
 
     prompt = f"""You are a helpful university FAQ assistant. Answer the student's
@@ -156,11 +163,24 @@ Question: {question}
 
 Answer:"""
 
-    response = client.models.generate_content(
-        model="gemini-3.6-flash",
-        contents=prompt
-    )
-    return response.text
+    last_error = None
+    for attempt in range(max_retries + 1):
+        try:
+            response = client.models.generate_content(
+                model="gemini-3.6-flash",
+                contents=prompt
+            )
+            return response.text
+        except Exception as e:
+            last_error = e
+            if attempt < max_retries:
+                time.sleep(2)  # brief pause before retrying
+                continue
+
+    # All retries failed — return a friendly message instead of crashing
+    return ("Sorry, the AI service is currently experiencing high demand and "
+            "isn't responding right now. Please wait a moment and try asking "
+            "your question again.")
 
 
 # -------------------------------------------------------------------
