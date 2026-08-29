@@ -152,9 +152,11 @@ def generate_answer(question, retrieved_chunks, max_retries=2):
 
     prompt = f"""You are a helpful university FAQ assistant. Answer the student's
 question using ONLY the information provided in the context below.
-If the answer is not contained in the context, say "I don't have that
-information in the university documents I have access to. Please contact
-the relevant office directly." Do not make up information.
+If the answer is not contained in the context, say exactly: "I couldn't find
+a clear answer to that in the university documents I have access to. Try
+rephrasing your question with more specific terms (for example, naming the
+exact program, fee type, or policy you're asking about), or contact the
+relevant office directly." Do not make up information.
 
 Context:
 {context}
