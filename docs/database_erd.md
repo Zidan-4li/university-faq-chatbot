@@ -28,6 +28,6 @@ erDiagram
 | feedback   | TEXT    | User feedback: 'helpful', 'not_helpful', or NULL      |
 
 A single-table design was chosen since the system only needs to log
-interactions for evaluation and review purposes, rather than manage
-multiple related entities (e.g. separate users, sessions, or documents
-tables), which would add unnecessary complexity for this project's scope.
+interactions for evaluation and review purposes. Managing multiple
+related entities such as separate users, sessions or documents tables
+would add unnecessary complexity for this project's scope.

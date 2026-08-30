@@ -1,35 +1,36 @@
-# University FAQ Chatbot (RAG)
+# University FAQ Chatbot
 
 A chatbot that answers student questions about the BIT program's admissions,
-fees, courses, and campus facilities using Retrieval-Augmented Generation
-(RAG), with persistent chat logging and user feedback collection.
+fees, courses and campus facilities using Retrieval-Augmented Generation.
+It keeps a persistent chat log and collects user feedback on each answer.
 
 ## How it works
 
-1. University FAQ documents (PDF) are split into chunks based on each
+1. University FAQ documents in PDF form are split into chunks based on each
    question-and-answer pair, so each chunk contains one complete,
    self-contained piece of information.
-2. Each chunk is converted into an embedding (a numerical representation of
-   its meaning) using Google's Gemini embedding model.
-3. Embeddings are stored in a vector database (ChromaDB).
-4. When a student asks a question, the system finds the most relevant chunks
-   by comparing the question's embedding to the stored chunk embeddings.
+2. Each chunk is converted into an embedding using Google's Gemini
+   embedding model.
+3. Embeddings are stored in a vector database using ChromaDB.
+4. When a student asks a question, the system finds the most relevant
+   chunks by comparing the question's embedding to the stored chunk
+   embeddings.
 5. The relevant chunks are passed to Gemini along with the question, and
-   Gemini generates an answer grounded in that information (reducing made-up
-   answers). If the answer can't be found, the chatbot says so and suggests
-   rephrasing, rather than guessing.
+   Gemini generates an answer grounded in that information to reduce
+   made-up answers. If the answer can't be found, the chatbot says so and
+   suggests rephrasing rather than guessing.
 6. The app displays the answer along with the source text it was based on.
-7. Every question, answer, and source is logged to a SQLite database, along
-   with optional user feedback (helpful / not helpful) on each answer.
+7. Every question, answer and source is logged to a SQLite database, along
+   with optional user feedback marking each answer helpful or not helpful.
 8. If the Gemini API is temporarily unavailable, the app automatically
    retries a couple of times before showing a friendly error message.
 
 ## Tech Stack
 
 - **Language:** Python
-- **LLM & Embeddings:** Google Gemini API
+- **LLM and Embeddings:** Google Gemini API
 - **Vector Database:** ChromaDB
-- **Relational Database:** SQLite (chat history and feedback logging)
+- **Relational Database:** SQLite for chat history and feedback logging
 - **Frontend:** Streamlit
 - **PDF Parsing:** pdfplumber
 
@@ -45,7 +46,8 @@ fees, courses, and campus facilities using Retrieval-Augmented Generation
    GEMINI_API_KEY=your_key_here
    ```
    Get a free key at https://aistudio.google.com/apikey
-4. Build the knowledge base (run once, or whenever the FAQ document changes):
+4. Build the knowledge base. Run this once, or whenever the FAQ document
+   changes:
    ```
    cd src
    python build_knowledge_base.py
@@ -55,7 +57,7 @@ fees, courses, and campus facilities using Retrieval-Augmented Generation
    cd ../app
    streamlit run app.py
    ```
-6. Open the local URL shown in your terminal (usually http://localhost:8501)
+6. Open the local URL shown in your terminal, usually http://localhost:8501
 
 ## Running Tests
 
@@ -66,8 +68,8 @@ python tests/test_rag_pipeline.py
 
 ## Viewing Chat History
 
-To review everything logged in the database (questions, answers, sources,
-feedback):
+To review everything logged in the database, including questions, answers,
+sources and feedback:
 ```
 cd src
 python view_history.py
@@ -77,10 +79,10 @@ python view_history.py
 
 ```
 university-faq-chatbot/
-├── data/               # Source FAQ document (PDF)
-├── src/                # Core RAG pipeline, database, and utility scripts
+├── data/               # Source FAQ document in PDF form
+├── src/                # Core RAG pipeline, database and utility scripts
 ├── app/                # Streamlit web application
-├── models/             # Saved vector database and chat history (auto-generated)
+├── models/             # Saved vector database and chat history, auto-generated
 ├── docs/               # Database ERD and supporting documentation
 ├── results/            # Evaluation test questions and outcomes
 ├── tests/              # Unit tests
@@ -91,6 +93,6 @@ university-faq-chatbot/
 
 ## Evaluation
 
-See `results/` for the full test question set and evaluation results
-(27 test questions covering direct queries, reworded phrasing, and
-out-of-scope refusals).
+See `results/` for the full test question set and evaluation results,
+covering 27 test questions across direct queries, reworded phrasing and
+out-of-scope refusals.

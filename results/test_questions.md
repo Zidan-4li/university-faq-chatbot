@@ -4,7 +4,7 @@ Instructions: Ask each question in the chatbot app, then fill in the
 "Actual Answer" and "Status" columns based on what it says.
 Status options: Correct / Partially Correct / Incorrect / Refused (out of scope)
 
-## Category A: Direct questions (matches document wording closely)
+## Category A: Direct questions that match document wording closely
 
 1. What are the admission requirements for undergraduate programs?
 2. When is the application deadline?
@@ -28,13 +28,13 @@ Status options: Correct / Partially Correct / Incorrect / Refused (out of scope)
 20. Who do students contact for IT support?
 21. Who should students contact regarding internship placements?
 
-## Category B: Reworded/casual phrasing (tests semantic retrieval)
+## Category B: Reworded or casual phrasing to test semantic retrieval
 
 22. Can I get a scholarship?
 23. What happens if I submit my assignment late?
 24. Is there mental health support on campus?
 
-## Category C: Out-of-scope (should refuse gracefully, not hallucinate)
+## Category C: Out-of-scope questions that should be refused gracefully instead of hallucinated
 
 25. What's the weather like today?
 26. What is the tuition fee for the Medicine program?

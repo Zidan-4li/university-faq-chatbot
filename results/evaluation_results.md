@@ -1,7 +1,7 @@
 # Evaluation Results
 
 27 test questions were run against the University FAQ Chatbot, covering
-direct questions matching document wording, reworded/casual phrasing,
+direct questions matching document wording, reworded or casual phrasing
 and out-of-scope questions the chatbot should refuse to answer.
 
 ## Results Table
@@ -32,31 +32,33 @@ and out-of-scope questions the chatbot should refuse to answer.
 | 22 | Can I get a scholarship? | Correct |
 | 23 | What happens if I submit my assignment late? | Correct |
 | 24 | Is there mental health support on campus? | Correct |
-| 25 | What's the weather like today? | Correct (refused appropriately) |
-| 26 | What is the tuition fee for the Medicine program? | Correct (refused appropriately) |
-| 27 | Who is the Prime Minister of Malaysia? | Correct (refused appropriately) |
+| 25 | What's the weather like today? | Refused correctly |
+| 26 | What is the tuition fee for the Medicine program? | Refused correctly |
+| 27 | Who is the Prime Minister of Malaysia? | Refused correctly |
 
 ## Summary Statistics
 
 - **Total questions tested:** 27
-- **Direct questions (Category A):** 21/21 correct (100%)
-- **Reworded/casual phrasing (Category B):** 3/3 correct (100%)
-- **Out-of-scope refusals (Category C):** 3/3 correctly refused (100%)
-- **Overall accuracy:** 27/27 (100%)
+- **Direct questions, Category A:** 21/21 correct, 100%
+- **Reworded or casual phrasing, Category B:** 3/3 correct, 100%
+- **Out-of-scope refusals, Category C:** 3/3 correctly refused, 100%
+- **Overall accuracy:** 27/27, 100%
 
 ## Observations
 
 - The chatbot correctly answered all direct questions matching the source
   document's structure and content.
-- Reworded/casual phrasing (e.g. "Can I get a scholarship?" instead of
-  "Are scholarships available?") was handled correctly, demonstrating
-  that semantic retrieval (via embeddings) works beyond exact keyword
+- Reworded or casual phrasing was handled correctly. For example, "Can I
+  get a scholarship?" was answered correctly even though it doesn't match
+  "Are scholarships available?" word for word. This demonstrates that
+  semantic retrieval through embeddings works beyond exact keyword
   matching.
 - Out-of-scope questions were consistently refused rather than answered
-  with fabricated information, confirming the grounding/prompt engineering
-  approach is effective at reducing hallucination.
-- During earlier, less formal testing (outside this evaluation set), some
-  vague or under-specified questions (e.g. "What is the tuition fees"
-  without naming a program) did not retrieve a correct answer. This shows
-  that retrieval accuracy can depend on how specifically a question is
-  phrased.
+  with fabricated information, confirming the grounding and prompt
+  engineering approach is effective at reducing hallucination.
+- During earlier, less formal testing outside this evaluation set, some
+  vague or under-specified questions did not retrieve a correct answer.
+  For example, "What is the tuition fees" without naming a program
+  failed where "What is the tuition fee for the BIT program" succeeded.
+  This shows that retrieval accuracy can depend on how specifically a
+  question is phrased.
