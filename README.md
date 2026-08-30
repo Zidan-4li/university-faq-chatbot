@@ -1,12 +1,14 @@
 # University FAQ Chatbot (RAG)
 
-A chatbot that answers student questions about admissions, fees, courses, and
-campus facilities using Retrieval-Augmented Generation (RAG).
+A chatbot that answers student questions about the BIT program's admissions,
+fees, courses, and campus facilities using Retrieval-Augmented Generation
+(RAG), with persistent chat logging and user feedback collection.
 
 ## How it works
 
-1. University FAQ documents are split into chunks based on each question-and-answer
-   pair, so each chunk contains one complete, self-contained piece of information.
+1. University FAQ documents (PDF) are split into chunks based on each
+   question-and-answer pair, so each chunk contains one complete,
+   self-contained piece of information.
 2. Each chunk is converted into an embedding (a numerical representation of
    its meaning) using Google's Gemini embedding model.
 3. Embeddings are stored in a vector database (ChromaDB).
@@ -14,15 +16,22 @@ campus facilities using Retrieval-Augmented Generation (RAG).
    by comparing the question's embedding to the stored chunk embeddings.
 5. The relevant chunks are passed to Gemini along with the question, and
    Gemini generates an answer grounded in that information (reducing made-up
-   answers).
+   answers). If the answer can't be found, the chatbot says so and suggests
+   rephrasing, rather than guessing.
 6. The app displays the answer along with the source text it was based on.
+7. Every question, answer, and source is logged to a SQLite database, along
+   with optional user feedback (helpful / not helpful) on each answer.
+8. If the Gemini API is temporarily unavailable, the app automatically
+   retries a couple of times before showing a friendly error message.
 
 ## Tech Stack
 
 - **Language:** Python
 - **LLM & Embeddings:** Google Gemini API
 - **Vector Database:** ChromaDB
+- **Relational Database:** SQLite (chat history and feedback logging)
 - **Frontend:** Streamlit
+- **PDF Parsing:** pdfplumber
 
 ## Setup Instructions
 
@@ -48,22 +57,40 @@ campus facilities using Retrieval-Augmented Generation (RAG).
    ```
 6. Open the local URL shown in your terminal (usually http://localhost:8501)
 
+## Running Tests
+
+Unit tests check that the document chunking logic works correctly:
+```
+python tests/test_rag_pipeline.py
+```
+
+## Viewing Chat History
+
+To review everything logged in the database (questions, answers, sources,
+feedback):
+```
+cd src
+python view_history.py
+```
+
 ## Project Structure
 
 ```
 university-faq-chatbot/
-├── data/               # Source FAQ documents
-├── src/                # Core RAG pipeline code
+├── data/               # Source FAQ document (PDF)
+├── src/                # Core RAG pipeline, database, and utility scripts
 ├── app/                # Streamlit web application
-├── models/             # Saved vector database (auto-generated)
-├── docs/               # Project documentation
-├── results/            # Evaluation results
-├── tests/              # Test cases
+├── models/             # Saved vector database and chat history (auto-generated)
+├── docs/               # Database ERD and supporting documentation
+├── results/            # Evaluation test questions and outcomes
+├── tests/              # Unit tests
 ├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
 ## Evaluation
 
-See `results/` for retrieval accuracy and answer correctness testing against
-a set of sample questions.
+See `results/` for the full test question set and evaluation results
+(27 test questions covering direct queries, reworded phrasing, and
+out-of-scope refusals).

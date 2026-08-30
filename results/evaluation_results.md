@@ -57,6 +57,6 @@ and out-of-scope questions the chatbot should refuse to answer.
   approach is effective at reducing hallucination.
 - During earlier, less formal testing (outside this evaluation set), some
   vague or under-specified questions (e.g. "What is the tuition fees"
-  without naming a program) did not retrieve a correct answer. This
-  highlights a limitation: retrieval accuracy can depend on how
-  specifically a question is phrased, discussed further in Chapter 6.3.
+  without naming a program) did not retrieve a correct answer. This shows
+  that retrieval accuracy can depend on how specifically a question is
+  phrased.
