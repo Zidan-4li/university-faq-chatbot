@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import streamlit as st
-from rag_pipeline import get_existing_collection, answer_question
+from rag_pipeline import get_existing_collection, answer_question, load_and_chunk_document, build_vector_store
 from database import init_db, log_interaction, update_feedback
 
 st.set_page_config(page_title="University FAQ Chatbot", page_icon="🎓")
@@ -14,7 +14,12 @@ init_db()
 
 @st.cache_resource
 def load_collection():
-    return get_existing_collection()
+    try:
+        return get_existing_collection()
+    except Exception:
+        pdf_path = os.path.join(os.path.dirname(__file__), "..", "data", "university_faq.pdf")
+        chunks = load_and_chunk_document(pdf_path)
+        return build_vector_store(chunks)
 
 collection = load_collection()
 
